@@ -9,7 +9,16 @@ import json
 import time
 
 DIR = r'../data/Random Sample'  # FILEPATH WHERE MP3s ARE CURRENTLY STORED
-MAP = r'../data/0_10000MLFiles.csv'  # FILEPATH TO CSV KEY
+# MAP = r'../data/0_10000MLFiles.csv'  # FILEPATH TO CSV KEY
+
+MAPS = []  # FILEPATHS TO CSV KEYS
+x = 0
+while x < 100000:
+    MAPS.append(r'../data/ML ' + str(x))
+    x += 10000
+
+print(MAPS)
+
 FINAL_DIR = r'../data/created_data'
 
 list_dir = os.listdir(DIR)
@@ -45,6 +54,10 @@ def process_signal(wavPath, animal_name):
 def rename(path, filename):
     ml_num = filename[0:filename.index('.')]
     ext = filename[filename.index('.'):]
+
+    map_choice = int(ml_num) / 10000
+    MAP = MAPS[map_choice]
+
     with open(MAP, 'r') as legend:
         # ln = 0
         reader = csv.reader(legend, delimiter=',')
