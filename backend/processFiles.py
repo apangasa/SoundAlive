@@ -52,6 +52,11 @@ def process_signal(wavPath, animal_name):
     return value
 
 
+def fix_nulls(s):
+    for line in s:
+        yield line.replace('\0', ' ')
+
+
 def rename(path, filename):
     ml_num = filename[0:filename.index('.')]
     ext = filename[filename.index('.'):]
@@ -63,23 +68,24 @@ def rename(path, filename):
         print(ml_num)
         MAP = MAPS[0]
 
-    with open(MAP, 'r') as legend:
+    with open(MAP, 'r', encoding='utf-8') as legend:
         # ln = 0
-        reader = csv.reader(legend, delimiter=',')
+        reader = csv.reader(fix_nulls(legend))
         for row in reader:
-            if str(row[0]) == str(ml_num):
-                new_name = str(row[3])
-                if '.' in new_name:
-                    new_name = new_name.replace('.', ' ', 3)
-                new_name = new_name + ext
-                if '/' in new_name:
-                    new_name = new_name.replace('/', ' ', 3)
+            if row:
+                if str(row[0]) == str(ml_num):
+                    new_name = str(row[3])
+                    if '.' in new_name:
+                        new_name = new_name.replace('.', ' ', 3)
+                    new_name = new_name + ext
+                    if '/' in new_name:
+                        new_name = new_name.replace('/', ' ', 3)
 
-                src = path + '/' + filename
-                dest = path + '/' + new_name
-                copyfile(src, dest)
-                os.remove(src)
-                return new_name
+                    src = path + '/' + filename
+                    dest = path + '/' + new_name
+                    copyfile(src, dest)
+                    os.remove(src)
+                    return new_name
     return None
 
 
