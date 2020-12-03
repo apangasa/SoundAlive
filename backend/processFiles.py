@@ -62,6 +62,7 @@ def rename(path, filename):
                 copyfile(src, dest)
                 os.remove(src)
                 return new_name
+    return None
 
 
 def process_files():
