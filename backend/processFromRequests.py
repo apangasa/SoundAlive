@@ -29,15 +29,15 @@ def request_data(index):
 def process_data(index):
 
     try:
-        sound = AudioSegment.from_mp3(DIR + '/' + str(index))
+        sound = AudioSegment.from_mp3(DIR + '/' + str(index) + '.mp3')
         sound.export(DIR + '/' + str(index) + '.wav', format="wav")
         os.remove(DIR + '/' + str(index) + '.mp3')
 
         trim_wav(DIR + '/' + str(index) + '.wav')
 
-        filename = rename(DIR, index + '.wav')
+        filename = rename(DIR, str(index) + '.wav')
         if filename is None:
-            os.remove(DIR + '/' + index + '.wav')
+            os.remove(DIR + '/' + str(index) + '.wav')
             return None, None
 
         filename = filename[0:filename.index('.')]
@@ -45,10 +45,14 @@ def process_data(index):
         value = process_signal(DIR + '/' + filename + '.wav', filename)
         os.remove(DIR + '/' + filename + '.wav')
 
-        return (filename, value)
+        return (value, filename)
     except Exception as e:
         print(e)
         print(index)
+        try:
+            os.remove(DIR + '/' + str(index) + '.mp3')
+        except:
+            pass
         return None, None
 
 
@@ -58,24 +62,26 @@ def main():
     value_to_name = {}
 
     t1 = time.time()
-    while index < 100000:
+    while count < 10000:
         try:
             # REQUEST AND SAVE DATA
             request_data(index)
             # PROCESS DATA
             (value, filename) = process_data(index)
             if value is None or filename is None:
+                index += 1
                 continue
             # APPEND TO DICT
             value_to_name[value] = filename
             # REGISTER THAT A DATA POINT WAS ACTUALLY RECEIVED
             count += 1
             if count % POINTS_PER_TEN_THOUSAND == 0:
-                count += (100000 - POINTS_PER_TEN_THOUSAND)
+                index += (100000 - POINTS_PER_TEN_THOUSAND)
+            else:
+                index += 1
         except:
-            pass
+            index += 1
 
-        index += 1
     t2 = time.time()
 
     with open(FINAL_DIR + '/our_key_2.json', 'w') as our_key:
@@ -83,3 +89,6 @@ def main():
 
     print('Time taken is ')
     print(str((t2 - t1)))
+
+
+main()
