@@ -1,20 +1,20 @@
 import numpy as np
-from scipy.io import wavfile
+from scipy.io.wavfile import read
 import math
 
 
-def process_signal(wavPath, animal):
-    fs, data = wavfile.read(wavPath)
-    #data = data[(len(data)//2):]
-    for i in range(len(data)):
-        if data[i] == 0:
-            np.delete(data, i)
-    w = np.arange(-1 * math.pi, math.pi + (math.pi/10), math.pi/10)
+def process_signal(animal):
+    fs, data_raw = read(animal + ".wav")
+    data = []
+    for i in range(len(data_raw)):
+        if data_raw[i] != 0:
+            data.append(data_raw[i])
+    data = np.array(data)
+    w = np.arange(0, (math.pi/2) + (math.pi/20), math.pi/20)
     h = np.zeros(len(w), dtype=complex)
     for x in range(len(w)):
-        for k in range(len(data)):
-            h[x] = h[x] + (data[k] * (math.cos(-1 * w[x] * k) +
-                                      1j*math.sin(-1 * w[x] * k)))
+        for k in range(0, len(data), 2):
+            h[x] = h[x] + (data[k] * (math.cos(-1 * w[x] * k) + 1j*math.sin(-1 * w[x] * k)))
     avg_data = np.average(data)
     amp = max(data) - avg_data
     h = np.abs(h)
