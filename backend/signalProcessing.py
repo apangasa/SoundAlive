@@ -3,7 +3,7 @@ from scipy.io.wavfile import read
 import math
 
 
-def wav_to_num(animal):
+def process_signal(animal):
     fs, data = read(animal + ".wav")
     #data = data[(len(data)//2):]
     for i in range(len(data)):
