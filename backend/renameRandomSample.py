@@ -9,7 +9,7 @@ MAP = r'../data/0_10000MLFiles.csv'
 
 def rename():
     for filename in os.listdir(OLD_DIR):
-        print(filename)
+        # print(filename)
         ml_num = filename[0:filename.index('.')]
         ext = filename[filename.index('.'):]
         with open(MAP, 'r') as legend:
