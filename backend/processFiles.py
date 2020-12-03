@@ -7,17 +7,40 @@ from scipy.io import wavfile
 import csv
 import json
 import time
+# from collections import OrderedDict
+
+from signalProcessing import process_signal
 
 DIR = r'../data/Random Sample'  # FILEPATH WHERE MP3s ARE CURRENTLY STORED
 # MAP = r'../data/0_10000MLFiles.csv'  # FILEPATH TO CSV KEY
 
-MAPS = []  # FILEPATHS TO CSV KEYS
+MAP_PATHS = []  # FILEPATHS TO CSV KEYS
 x = 0
 while x < 100000:
-    MAPS.append(r'../data/ML ' + str(x) + '.csv')
+    MAP_PATHS.append(r'../data/ML ' + str(x) + '.csv')
     x += 10000
 
-print(MAPS)
+
+def fix_nulls(s):
+    for line in s:
+        yield line.replace('\0', ' ')
+
+
+t1 = time.time()
+MAPS = []
+for MAP_PATH in MAP_PATHS:
+    with open(MAP_PATH, 'r', encoding='utf-8') as map_file:
+        reader = csv.reader(fix_nulls(map_file))
+        map_instance = {}
+        for row in reader:
+            map_instance[row[0]] = row[3]
+        MAPS.append(map_instance)
+
+
+t2 = time.time()
+
+print('Time taken to make maps is ')
+print(t2 - t1)
 
 FINAL_DIR = r'../data/created_data'
 
@@ -29,7 +52,7 @@ def trim_wav(wavPath):
     n = waveData.size
     duration = n / sampleRate
 
-    clip_size = 10
+    clip_size = 5
 
     if duration < clip_size:
         clip_size /= 3
@@ -43,18 +66,13 @@ def trim_wav(wavPath):
     wavfile.write(wavPath, sampleRate, waveData[startSample:endSample])
 
 
-def process_signal(wavPath, animal_name):
-    # gives a random number, get rid of this after signal processing is written
-    value = int(''.join(str(ord(c)) for c in animal_name))
+# def process_signal(wavPath, animal_name):
+#     # gives a random number, get rid of this after signal processing is written
+#     value = int(''.join(str(ord(c)) for c in animal_name))
 
-    # PROCESS SIGNAL HERE @ PRAVEEN
+#     # PROCESS SIGNAL HERE @ PRAVEEN
 
-    return value
-
-
-def fix_nulls(s):
-    for line in s:
-        yield line.replace('\0', ' ')
+#     return value
 
 
 def rename(path, filename):
@@ -68,24 +86,41 @@ def rename(path, filename):
         print(ml_num)
         MAP = MAPS[0]
 
-    with open(MAP, 'r', encoding='utf-8') as legend:
-        # ln = 0
-        reader = csv.reader(fix_nulls(legend))
-        for row in reader:
-            if row:
-                if str(row[0]) == str(ml_num):
-                    new_name = str(row[3])
-                    if '.' in new_name:
-                        new_name = new_name.replace('.', ' ', 3)
-                    new_name = new_name + ext
-                    if '/' in new_name:
-                        new_name = new_name.replace('/', ' ', 3)
+    try:
+        new_name = str(MAP[ml_num])
+        if '.' in new_name:
+            new_name = new_name.replace('.', ' ', 3)
+        new_name = new_name + ext
+        if '/' in new_name:
+            new_name = new_name.replace('/', ' ', 3)
 
-                    src = path + '/' + filename
-                    dest = path + '/' + new_name
-                    copyfile(src, dest)
-                    os.remove(src)
-                    return new_name
+        src = path + '/' + filename
+        dest = path + '/' + new_name
+        copyfile(src, dest)
+        os.remove(src)
+        return new_name
+    except:
+        # os.remove(path + '/' + filename)
+        return None
+
+    # with open(MAP, 'r', encoding='utf-8') as legend:
+    #     # ln = 0
+    #     reader = csv.reader(fix_nulls(legend))
+    #     for row in reader:
+    #         if row:
+    #             if str(row[0]) == str(ml_num):
+    #                 new_name = str(row[3])
+    #                 if '.' in new_name:
+    #                     new_name = new_name.replace('.', ' ', 3)
+    #                 new_name = new_name + ext
+    #                 if '/' in new_name:
+    #                     new_name = new_name.replace('/', ' ', 3)
+
+    #                 src = path + '/' + filename
+    #                 dest = path + '/' + new_name
+    #                 copyfile(src, dest)
+    #                 os.remove(src)
+    #                 return new_name
     return None
 
 

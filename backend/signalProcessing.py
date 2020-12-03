@@ -3,8 +3,8 @@ from scipy.io.wavfile import read
 import math
 
 
-def process_signal(animal):
-    fs, data_raw = read(animal + ".wav")
+def process_signal(wavPath, animal):
+    fs, data_raw = read(wavPath)
     data = []
     for i in range(len(data_raw)):
         if data_raw[i] != 0:
@@ -14,7 +14,8 @@ def process_signal(animal):
     h = np.zeros(len(w), dtype=complex)
     for x in range(len(w)):
         for k in range(0, len(data), 2):
-            h[x] = h[x] + (data[k] * (math.cos(-1 * w[x] * k) + 1j*math.sin(-1 * w[x] * k)))
+            h[x] = h[x] + (data[k] * (math.cos(-1 * w[x] * k) +
+                                      1j*math.sin(-1 * w[x] * k)))
     avg_data = np.average(data)
     amp = max(data) - avg_data
     h = np.abs(h)
