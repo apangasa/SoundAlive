@@ -3,10 +3,12 @@ from scipy.io.wavfile import read
 import math
 
 
-def process_signal(animal):
+def wav_to_num(animal):
     fs, data = read(animal + ".wav")
-    data = data[:, 0]
-    data = data[(len(data)//2):]
+    #data = data[(len(data)//2):]
+    for i in range(len(data)):
+        if data[i] == 0:
+            np.delete(data, i)
     w = np.arange(-1 * math.pi, math.pi + (math.pi/10), math.pi/10)
     h = np.zeros(len(w), dtype=complex)
     for x in range(len(w)):
