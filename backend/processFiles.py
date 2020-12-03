@@ -14,7 +14,7 @@ DIR = r'../data/Random Sample'  # FILEPATH WHERE MP3s ARE CURRENTLY STORED
 MAPS = []  # FILEPATHS TO CSV KEYS
 x = 0
 while x < 100000:
-    MAPS.append(r'../data/ML ' + str(x))
+    MAPS.append(r'../data/ML ' + str(x) + '.csv')
     x += 10000
 
 print(MAPS)
@@ -39,6 +39,7 @@ def trim_wav(wavPath):
 
     startSample = int(start * sampleRate)
     endSample = int(end * sampleRate)
+
     wavfile.write(wavPath, sampleRate, waveData[startSample:endSample])
 
 
@@ -55,8 +56,12 @@ def rename(path, filename):
     ml_num = filename[0:filename.index('.')]
     ext = filename[filename.index('.'):]
 
-    map_choice = int(ml_num) / 10000
-    MAP = MAPS[map_choice]
+    try:
+        map_choice = int(ml_num) / 10000
+        MAP = MAPS[int(map_choice)]
+    except:
+        print(ml_num)
+        MAP = MAPS[0]
 
     with open(MAP, 'r') as legend:
         # ln = 0
@@ -119,4 +124,4 @@ def main():
     print(str((t2 - t1)))
 
 
-main()
+# main()
