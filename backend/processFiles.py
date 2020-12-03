@@ -78,7 +78,7 @@ def process_files():
             old_filename = filename
             filename = rename(DIR, filename + '.wav')
             if filename is None:
-                os.remove(DIR + '/' + old_filename)
+                os.remove(DIR + '/' + old_filename + '.wav')
                 continue
 
             filename = filename[0:filename.index('.')]
