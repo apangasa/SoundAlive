@@ -3,7 +3,8 @@ import json
 import requests
 import time
 
-from classDefs import BTree, Splay
+# from classDefs import BTree, Splay
+from bTree import BTree
 from storageAndRetrieval import deserialize, serialize
 from signalProcessing import process_signal
 from identifyAnimals import get_matches
