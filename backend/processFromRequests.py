@@ -15,7 +15,7 @@ from processFiles import trim_wav, rename, process_signal
 DIR = r'../data/Random Sample'  # FILEPATH TO SAVE TEMP FILES
 MAP = r'../data/0_10000MLFiles.csv'  # FILEPATH TO CSV KEY
 FINAL_DIR = r'../data/created_data'
-POINTS_PER_TEN_THOUSAND = 1
+POINTS_PER_TEN_THOUSAND = 280
 
 
 def request_data(index):
@@ -67,7 +67,7 @@ def main():
     value_to_name = {}
 
     t1 = time.time()
-    while count < POINTS_PER_TEN_THOUSAND * 5:
+    while count < POINTS_PER_TEN_THOUSAND * 10:
         print(count)
         try:
             # REQUEST AND SAVE DATA
