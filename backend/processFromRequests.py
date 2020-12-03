@@ -26,6 +26,8 @@ def request_data(index):
         with open(DIR + '/' + str(index) + '.mp3', 'wb') as f:
             f.write(filedata.content)
     else:
+        print(index)
+        print('Invalid Request')
         raise Exception('Invalid request')
 
 
@@ -65,7 +67,8 @@ def main():
     value_to_name = {}
 
     t1 = time.time()
-    while count < POINTS_PER_TEN_THOUSAND * 10:
+    while count < POINTS_PER_TEN_THOUSAND * 5:
+        print(count)
         try:
             # REQUEST AND SAVE DATA
             request_data(index)
@@ -81,6 +84,8 @@ def main():
             print(count)
             if count % POINTS_PER_TEN_THOUSAND == 0:
                 index += (10000 - POINTS_PER_TEN_THOUSAND)
+                with open(FINAL_DIR + '/our_key_2.json', 'w') as our_key:
+                    json.dump(value_to_name, our_key)
             else:
                 index += 1
         except:
