@@ -16,7 +16,7 @@ DIR = r'../data/Random Sample'  # FILEPATH WHERE MP3s ARE CURRENTLY STORED
 
 MAP_PATHS = []  # FILEPATHS TO CSV KEYS
 x = 0
-while x < 150000:
+while x < 180000:
     MAP_PATHS.append(r'../data/ML ' + str(x) + '.csv')
     x += 10000
 
