@@ -1,14 +1,33 @@
 import numpy as np
+import librosa
+import soundfile as sf
 from scipy.io.wavfile import read
+import wavfile as wvf
+import wavio
 import math
 
 
 def process_signal(wavPath, animal):
-    fs, data_raw = read(wavPath)
-    data = []
-    for i in range(len(data_raw)):
-        if data_raw[i] != 0:
-            data.append(data_raw[i])
+    # x, _ = librosa.load(wavPath, sr=16000)
+    # sf.write(wavPath, x, 16000)
+
+    # ideally use just the following line:
+    # fs, data_raw = read(wavPath)
+    try:
+        fs, data_raw = read(wavPath)
+        # fs, data_raw, _ = wvf.read(wavPath)
+        data = []
+        for i in range(len(data_raw)):
+            if data_raw[i] != 0:
+                data.append(data_raw[i])
+    except:
+        fs, data_raw = read(wavPath)
+        # fs, data_raw, _ = wvf.read(wavPath)
+        data_raw = data_raw[:, 0]
+        data = []
+        for i in range(len(data_raw)):
+            if data_raw[i] != 0:
+                data.append(data_raw[i])
     data = np.array(data)
     w = np.arange(0, (math.pi/2) + (math.pi/20), math.pi/20)
     h = np.zeros(len(w), dtype=complex)
