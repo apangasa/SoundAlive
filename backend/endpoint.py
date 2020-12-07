@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import json
-import requests
+# import requests
 import time
 import os
 import base64
@@ -12,7 +12,7 @@ from splayTree import SplayTree
 from storageAndRetrieval import deserialize, serialize
 from signalProcessing import process_signal
 # from identifyAnimals import get_matches
-from pydub import AudioSegment
+# from pydub import AudioSegment
 
 
 app = Flask(__name__)
@@ -38,7 +38,7 @@ def processAudio():
     # file.save('/input.mp3')
 
     print('Content is')
-    print(content)
+    # print(content)
 
     content = content.split(',')[1]  # get rid of prefix in base 64
 
