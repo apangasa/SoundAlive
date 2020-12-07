@@ -1,15 +1,33 @@
 import logo from './logo.svg';
+import {useState} from 'react';
 import './App.css';
-import WebRecorder from './Recorder';
-
+import File from './File.js';
+import WebRecorder from './WavRecorder';
 function App() {
+  const [submittedFile, setSubmittedFile] = useState(false);
+  const [animal, setAnimal]= useState(null);
+  const [time, setTime] = useState(null);
+  function handleSubmit(animal, time) {
+    setSubmittedFile(true);
+    setAnimal(animal);
+    setTime(time);
+  }
   return (
     <div className="App">
       <header className="App-header">
-        <WebRecorder />
+        {!submittedFile ?
+        <div>
+        <WebRecorder onFileSend={handleSubmit}/>
+        <File onFileSend={handleSubmit}/>
+        </div>
+        :
+        <div>
+        <p> your animal is: {animal}</p>
+        <p> Found in {time}</p>
+        </div>
+      }
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
         </p>
         <a
           className="App-link"
