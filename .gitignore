@@ -2,3 +2,4 @@ data/Random Sample/
 data/backup/
 *.pyc
 .vscode/settings.json
+*.cpp
