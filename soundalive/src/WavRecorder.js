@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import {useReactMediaRecorder, ReactMediaRecorder} from "react-media-recorder";
+import {useReactMediaRecorder} from "react-media-recorder";
 
 const Record = props => {
 
-  const [submitted, setSubmitted] = useState(false);
-  const [animal, setAnimal]= useState('');
-  const [time, setTime] = useState('');
+  const [submitted] = useState(false);
+  const [animal]= useState('');
   const {
     status,
     startRecording,
