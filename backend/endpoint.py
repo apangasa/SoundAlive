@@ -11,7 +11,7 @@ from bTree import BTree
 from splayTree import SplayTree
 from storageAndRetrieval import deserialize, serialize
 from signalProcessing import process_signal
-from identifyAnimals import get_matches
+# from identifyAnimals import get_matches
 from pydub import AudioSegment
 
 
@@ -101,7 +101,7 @@ def processAudio():
             'time': t2 - t1
         },
         'Splay': {
-            'matches': s_matches,
+            'matches': s_animals,
             'time': t4 - t3
         },
         'Value': val
