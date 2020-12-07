@@ -7,5 +7,3 @@ def to_csv(animal, list1, list2):
         addRow.writerow(row)
     return
 
-to_csv('hello', ['1','2','3'], ['4','5','6'])
-to_csv('hello', ['1','2','3'], ['4','5','6'])
