@@ -3,3 +3,4 @@ data/backup/
 *.pyc
 .vscode/settings.json
 *.cpp
+data/created_data/our_key_3.json
