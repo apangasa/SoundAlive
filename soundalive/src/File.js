@@ -26,11 +26,12 @@ export default class File extends React.Component {
   // Callback~
   getFiles(files){
     this.setState({ files: files })
+    console.log(files.name.split(".")[0]);
     console.log(files.base64);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({"content":files.base64});
+    var raw = JSON.stringify({"content":files.base64, "filename": files.name.split(".")[0]});
     var requestOptions = {
           method: 'POST',
           headers: myHeaders,
