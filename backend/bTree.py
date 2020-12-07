@@ -100,6 +100,56 @@ class BTree(object):
         # Since we split all full nodes on the way down, we can simply insert the payload in the leaf.
         node.add_key(payload)
 
+    def get_matches(self, payload):
+        """Attempt to insert a new key of value payload into the B-Tree. Return the closest values."""
+        node = self.root
+        # Root is handled explicitly since it requires creating 2 new nodes instead of the usual one.
+        if node._is_full:
+            new_root = self.Node(self._t)
+            new_root.children.append(self.root)
+            new_root.leaf = False
+            # node is being set to the node containing the ranges we want for payload insertion.
+            node = node.split(new_root, payload)
+            self.root = new_root
+        while not node.leaf:
+            i = node.size - 1
+            while i > 0 and payload < node.keys[i]:
+                i -= 1
+            if payload > node.keys[i]:
+                i += 1
+
+            next = node.children[i]
+            if next._is_full:
+                node = next.split(node, payload)
+            else:
+                node = next
+        # Since we split all full nodes on the way down, we can simply insert the payload in the leaf.
+        # node.add_key(payload)
+        matches = []
+        for i in range(len(node.keys)):
+            if payload < node.keys[i]:
+                matches.append(node.keys[i])
+                if i - 1 > 0:
+                    matches.append(node.keys[i-1])
+                else:
+                    try:
+                        matches.append(node.keys[i+1])
+                        matches.append(node.keys[i+2])
+                        return matches
+                    except:
+                        return matches
+                if i + 1 < len(node.keys):
+                    matches.append(node.keys[i+1])
+                    return matches
+                else:
+                    try:
+                        matches.append(node.keys[i-2])
+                        return matches
+                    except:
+                        return matches
+
+        return matches
+
     def search(self, value, node=None):
         """Return True if the B-Tree contains a key that matches the value."""
         if node is None:

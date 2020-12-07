@@ -26,21 +26,32 @@ def fix_nulls(s):
         yield line.replace('\0', ' ')
 
 
-t1 = time.time()
 MAPS = []
-for MAP_PATH in MAP_PATHS:
-    with open(MAP_PATH, 'r', encoding='utf-8') as map_file:
-        reader = csv.reader(fix_nulls(map_file))
-        map_instance = {}
-        for row in reader:
-            map_instance[row[0]] = row[3]
-        MAPS.append(map_instance)
 
 
-t2 = time.time()
+def make_maps():
+    global MAP_PATHS
+    global MAPS
+    t1 = time.time()
+    MAPS = []
+    for MAP_PATH in MAP_PATHS:
+        if MAP_PATH != r'../data/ML 150000':
+            with open(MAP_PATH, 'r', encoding='utf-8') as map_file:
+                reader = csv.reader(fix_nulls(map_file))
+                map_instance = {}
+                for row in reader:
+                    map_instance[row[0]] = row[3]
+                MAPS.append(map_instance)
+        else:
+            MAPS.append({})
 
-print('Time taken to make maps is ')
-print(t2 - t1)
+    t2 = time.time()
+
+    print('Time taken to make maps is ')
+    print(t2 - t1)
+
+
+# make_maps()
 
 FINAL_DIR = r'../data/created_data'
 
