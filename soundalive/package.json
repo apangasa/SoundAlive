@@ -7,9 +7,14 @@
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.4.0",
     "mic-recorder-to-mp3": "^2.2.2",
+    "opus-recorder": "^8.0.3",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-file-base64": "^1.0.3",
+    "react-media-recorder": "^1.4.0",
+    "react-mic": "^12.4.6",
     "react-scripts": "4.0.1",
+    "web-audio-recorder-js": "0.0.2",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
