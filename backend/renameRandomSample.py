@@ -6,7 +6,7 @@ OLD_DIR = r'../data/Random Sample'
 NEW_DIR = r'../data/Random Sample Named'
 MAP = r'../data/0_10000MLFiles.csv'
 
-
+#rename files of random sampling so no overwriting
 def rename():
     for filename in os.listdir(OLD_DIR):
         # print(filename)
