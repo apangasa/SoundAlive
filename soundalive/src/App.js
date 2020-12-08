@@ -25,7 +25,7 @@ function App() {
     console.log(set);
     setOtherMatches(set);
     //request first image from bing of object // NO SAFE SEARCH IMPLEMENTED YET SO USE AT OWN DISCRETION!
-    /*    var myHeaders = new Headers();
+        var myHeaders = new Headers();
     myHeaders.append("x-rapidapi-key", "de103cb136msh54049396c04d9aap1b6bffjsnbab7cfaebe8f");
     myHeaders.append("x-rapidapi-host", "bing-image-search1.p.rapidapi.com");
 
@@ -38,7 +38,7 @@ function App() {
     fetch("https://bing-image-search1.p.rapidapi.com/images/search?q="+animal+"&count=1", requestOptions)
     .then(response => response.json())
     .then(result => setImage(result.value[0].thumbnailUrl))
-    .catch(error => console.log('error', error));*/
+    .catch(error => console.log('error', error));
 
   }
   return (
