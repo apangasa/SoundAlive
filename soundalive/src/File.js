@@ -31,8 +31,6 @@ export default class File extends React.Component {
   getFiles(files){
     this.setState({ files: files });
     this.setState({ loading: true })
-    console.log(files.name.split(".")[0]);
-    console.log(files.base64);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     //sending file base64 encoded to backend
