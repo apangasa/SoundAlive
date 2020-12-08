@@ -1,7 +1,7 @@
 import requests
 
-DIR = r'MP3'  # modify to download location
-
+DIR = r'MP3'
+#dictionary of all selected animals for testing with database listing number
 dict = {
     '67895': 'Cattle (Domestic type)',
     '132526': 'Cat (Domestic type)',
@@ -35,13 +35,11 @@ dict = {
     '110297': 'scissor-grinder cicada',
     '45488': 'Brown Pelican'
 }
-
+#requesting from database and writing to mp3 file in directory
 for key in dict:
     try:
         url = 'https://cdn.download.ams.birds.cornell.edu/api/v1/asset/'+key
         filedata = requests.get(url)
-        # print(filedata)
-        # print(filedata.content)
         with open(DIR+'/'+dict[key]+'.mp3', 'wb') as f:
             f.write(filedata.content)
     except Exception as e:
