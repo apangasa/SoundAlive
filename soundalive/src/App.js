@@ -11,7 +11,7 @@ function App() {
   const [animal, setAnimal]= useState(null);
   const [bTime, setBTime] = useState(null);
   const [sTime, setSTime] = useState(null);
-  const [otherMatches, setOtherMatches] = useState(null);
+  const [otherMatches, setOtherMatches] = useState(["loading", "loading"]);
   const [image, setImage]= useState(logo);
   //based on pythonanywhere response set setState
   function handleSubmit(animal, sTime, bTime, set) {
@@ -20,10 +20,13 @@ function App() {
     setBTime(bTime);
     setSTime(sTime);
     setImage(logo);
-    setOtherMatches(set);
     console.log(otherMatches);
     console.log(set);
-    setOtherMatches(set);
+    let array = [];
+    array = [...set];
+    console.log("ARRAY tpe")
+    console.log(array.isArray);
+    setOtherMatches(array);
     //request first image from bing of object // NO SAFE SEARCH IMPLEMENTED YET SO USE AT OWN DISCRETION!
         var myHeaders = new Headers();
     myHeaders.append("x-rapidapi-key", "de103cb136msh54049396c04d9aap1b6bffjsnbab7cfaebe8f");
@@ -60,6 +63,12 @@ function App() {
         <p> your animal is: {animal}</p>
         <p> B-tree found in: {bTime}</p>
         <p> Splay tree found in: {sTime}</p>
+        <p> Other Potential Animals:
+        {
+          otherMatches.map((otherAnimal) => {
+          return <span> {otherAnimal}, </span>
+        })
+    }</p>
         <img src={image} className="App-logo" alt="logo" />
         </div>
       }
