@@ -4,7 +4,7 @@ import os
 OLD_DIR = '../data/created_data/processed_data'
 NEW_DIR = '../data/created_data'
 combined = {}
-
+#go through all jsons and combine them for further processing
 for filename in os.listdir(OLD_DIR):
     with open(OLD_DIR + '/' + filename, 'r') as key:
         this_dict = json.load(key)

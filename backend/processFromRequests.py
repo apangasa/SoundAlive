@@ -17,7 +17,7 @@ MAP = r'../data/0_10000MLFiles.csv'  # FILEPATH TO CSV KEY
 FINAL_DIR = r'../data/created_data'
 POINTS_PER_TEN_THOUSAND = 280
 
-
+#requests from macaulaylibrary by iterating through indexes
 def request_data(index):
     url = 'https://cdn.download.ams.birds.cornell.edu/api/v1/asset/' + \
         str(index)
@@ -30,10 +30,11 @@ def request_data(index):
         print('Invalid Request')
         raise Exception('Invalid request')
 
-
+#file processing by converting, trimming, and identifying audio quality
 def process_data(index):
 
     try:
+        #convert to wav
         sound = AudioSegment.from_mp3(DIR + '/' + str(index) + '.mp3')
         sound.export(DIR + '/' + str(index) + '.wav', format="wav")
         os.remove(DIR + '/' + str(index) + '.mp3')
@@ -46,7 +47,7 @@ def process_data(index):
             return None, None
 
         filename = filename[0:filename.index('.')]
-
+        #process signal wav
         value = process_signal(DIR + '/' + filename + '.wav', filename)
         os.remove(DIR + '/' + filename + '.wav')
 
@@ -60,12 +61,12 @@ def process_data(index):
             pass
     return None, None
 
-
+#running through index of all items
 def main():
     index = 0
     count = 0
     value_to_name = {}
-
+    #measure time to get estimate of time to perform all requests
     t1 = time.time()
     while count < POINTS_PER_TEN_THOUSAND * 10:
         print(count)
@@ -92,10 +93,10 @@ def main():
             index += 1
 
     t2 = time.time()
-
+    #write data collected to json
     with open(FINAL_DIR + '/our_key_2.json', 'w') as our_key:
         json.dump(value_to_name, our_key)
-
+    #time to estimate
     print('Time taken is ')
     print(str((t2 - t1)))
 

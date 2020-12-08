@@ -1,4 +1,5 @@
 # THIS SCRIPT REQUIRES YOU TO BEGIN WITH A FOLDER OF MP3 FILES
+#Going through all files and procesing signals
 
 import os
 from shutil import copyfile
@@ -10,30 +11,31 @@ import time
 # from collections import OrderedDict
 
 from signalProcessing import process_signal
-
 DIR = r'../data/Random Sample'  # FILEPATH WHERE MP3s ARE CURRENTLY STORED
 # MAP = r'../data/0_10000MLFiles.csv'  # FILEPATH TO CSV KEY
 
 MAP_PATHS = []  # FILEPATHS TO CSV KEYS
 x = 0
+#go through all items in list
 while x < 190000:
     MAP_PATHS.append(r'../data/ML ' + str(x) + '.csv')
     x += 10000
 
-
+#remove blank/null values
 def fix_nulls(s):
     for line in s:
         yield line.replace('\0', ' ')
 
-
+#blank map of animals and ML values
 MAPS = []
 
-
+#creating a map using data
 def make_maps():
     global MAP_PATHS
     global MAPS
     t1 = time.time()
     MAPS = []
+    #looping through all datapoints to add all data into one map
     for MAP_PATH in MAP_PATHS:
         if MAP_PATH != r'../data/ML 150000':
             with open(MAP_PATH, 'r', encoding='utf-8') as map_file:
@@ -57,7 +59,7 @@ FINAL_DIR = r'../data/created_data'
 
 list_dir = os.listdir(DIR)
 
-
+#trim wav file if too long to process (processing limits require smaller wavs)
 def trim_wav(wavPath):
     sampleRate, waveData = wavfile.read(wavPath)
     n = waveData.size
@@ -85,7 +87,7 @@ def trim_wav(wavPath):
 
 #     return value
 
-
+#function to rename files from ML number to animal name using map
 def rename(path, filename):
     ml_num = filename[0:filename.index('.')]
     ext = filename[filename.index('.'):]
@@ -134,18 +136,21 @@ def rename(path, filename):
     #                 return new_name
     return None
 
-
+#process files using signal processing
 def process_files():
     value_to_name = {}
+    #for each audio file process it
     for filename in list_dir:
         try:
+            #get audio file
             sound = AudioSegment.from_mp3(DIR + '/' + filename)
             filename = filename[0:filename.index('.')]
+            #export audio as wav file
             sound.export(DIR + '/' + filename + '.wav', format="wav")
+            #remove mp3 file after conversion
             os.remove(DIR + '/' + filename + '.mp3')
-
+            #trim wav to processing limits
             trim_wav(DIR + '/' + filename + '.wav')
-
             old_filename = filename
             filename = rename(DIR, filename + '.wav')
             if filename is None:
@@ -168,7 +173,7 @@ def main():
     t1 = time.time()
     value_to_name = process_files()
     t2 = time.time()
-
+    #write results of file processing
     with open(FINAL_DIR + '/our_key.json', 'w') as our_key:
         json.dump(value_to_name, our_key)
 
