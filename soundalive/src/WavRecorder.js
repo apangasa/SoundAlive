@@ -1,3 +1,4 @@
+//NOT SUPPORTED DO NOT USE
 import React, {useState} from 'react';
 import {useReactMediaRecorder} from "react-media-recorder";
 
@@ -38,7 +39,7 @@ const Record = props => {
             redirect: 'follow'
           };
 
-          fetch("https://70b6fcf64826.ngrok.io/process-audio", requestOptions)
+          fetch("https://apangasa.pythonanywhere.com/process-audio", requestOptions)
           .then(response => response.text())
           .then(result => console.log(result))
           .then(props.onFileSend("animal", "time"))
@@ -55,7 +56,7 @@ const Record = props => {
       <button onClick={startRecording}>Start Recording</button>
       <button onClick={stopRecording}>Stop Recording</button>
       <audio src={mediaBlobUrl} controls autoPlay loop />
-      <button onClick={submit}> {submitted} </button> </>
+      <button onClick={submit}> Submit </button> </>
       : <p> Submitted </p> }
     </div>
   );
