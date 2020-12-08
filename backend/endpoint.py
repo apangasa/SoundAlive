@@ -117,5 +117,5 @@ def processAudio():
     return jsonify(results), 200
 
 
-if __name__ == '__main__':
-    app.run()
+# if __name__ == '__main__':
+#     app.run()
