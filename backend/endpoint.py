@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 import json
+import csv
 # import requests
 import time
 import os
@@ -11,6 +12,7 @@ from bTree import BTree
 from splayTree import SplayTree
 from storageAndRetrieval import deserialize, serialize
 from signalProcessing import process_signal
+from writeToCSV import to_csv
 # from identifyAnimals import get_matches
 # from pydub import AudioSegment
 
@@ -29,6 +31,7 @@ def processAudio():
     (b_tree, splay_tree) = deserialize()
     # receive base 64 of uploaded wav file
     content = request.json.get('content', None)
+    filename = request.json.get('filename', None)
     # content = request.get_data()
     # print('hi')
     # file = request.files['file']
@@ -94,6 +97,8 @@ def processAudio():
 
     serialize(b_tree, 'B')
     serialize(splay_tree, 'S')
+
+    to_csv(filename, b_animals, s_animals, t2 - t1, t4 - t3)
 
     results = {
         'B': {
